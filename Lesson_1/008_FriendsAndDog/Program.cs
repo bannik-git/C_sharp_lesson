@@ -25,7 +25,4 @@ while (distance > 2)
     count++;
 }
 
-Console.WriteLine(count);
-
-
-
+Console.WriteLine("Собака пробежала между друзьями " + count + " раз");

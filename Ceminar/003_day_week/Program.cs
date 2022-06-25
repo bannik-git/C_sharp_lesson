@@ -1,4 +1,4 @@
-﻿Console.Write("Введите номер дня недели ");
+﻿Console.Write("Введите номер дня недели (1-7): ");
 int a = Convert.ToInt32(Console.ReadLine());
 
 if (a == 1)

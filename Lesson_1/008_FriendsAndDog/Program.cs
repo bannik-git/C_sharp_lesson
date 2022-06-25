@@ -18,7 +18,7 @@ while (distance > 2)
     else
     {
         time = distance / (firstFriendsSpeed + dogSpeed);
-        DirectionDog = 1;
+        directionDog = 1;
     }
 
     distance = distance - (firstFriendsSpeed + secondFriendsSpeed) * time;

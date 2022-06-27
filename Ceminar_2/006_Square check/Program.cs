@@ -5,7 +5,7 @@ int userNumber2 = Convert.ToInt32(Console.ReadLine());
 
 // Вариант 3
 
-if (userNumber1 = userNumber2 * userNumber2 || userNumber2 = userNumber1 * userNumber1)
+if ((userNumber1 == userNumber2 * userNumber2) || (userNumber2 == userNumber1 * userNumber1))
 {
     Console.WriteLine($"{userNumber1}, {userNumber2} -> да");
 }

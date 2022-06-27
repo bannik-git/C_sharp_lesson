@@ -1,19 +1,19 @@
-﻿string secret_message = "Пельмени надо варить 2 минуты после всплытия",
+﻿string secretMessage = "Пельмени надо варить 2 минуты после всплытия",
     password = "password";
 
 int count = 0,
-    max_attemp = 3;
+    maxAttemp = 3;
 
-Console.WriteLine($"У вас будет {max_attemp} попытки чтобы ввести пароль.");
+Console.WriteLine($"У вас будет {maxAttemp} попытки чтобы ввести пароль.");
 
-while (count < max_attemp)
+while (count < maxAttemp)
 {
     Console.Write($"Попытка №{count + 1}: ");
     string userPassword = Console.ReadLine();
 
     if (userPassword == password)
     {
-        Console.WriteLine($"Секретное сообщение: {secret_message}");
+        Console.WriteLine($"Секретное сообщение: {secretMessage}");
         break; // выход из цикла, завершение программы.
     }    
    else
@@ -23,7 +23,7 @@ while (count < max_attemp)
    }
 }
 
-if (count == max_attemp)
+if (count == maxAttemp)
 {
     Console.WriteLine("Вы исчерпали все попытки.");
 }

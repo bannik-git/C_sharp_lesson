@@ -12,6 +12,10 @@ else if (userDay > 7)
 {
     Console.WriteLine("В неделе только 7 дней!");
 }
+else if (userDay <= 0)
+{
+    Console.WriteLine("В следующий раз используйте только цифры от 1 до 7");
+}
 else
 {
     Console.WriteLine("Не выходной день.");

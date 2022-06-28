@@ -1,6 +1,6 @@
 ﻿Console.Write("Введите число: ");
 
-string userNumberString = Console.ReadLine();
+string userNumberString = Console.ReadLine() ?? "";
 int userNumber = Convert.ToInt32(userNumberString);
 int size = userNumberString.Length; // находим длину строки, понимаем скольки значное число
 

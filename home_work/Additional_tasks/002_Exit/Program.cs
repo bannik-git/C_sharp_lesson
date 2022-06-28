@@ -4,7 +4,7 @@ Console.WriteLine("Программа работает исправно");
 while (true)
 {
     Console.Write("Если хотите завершить программу введите exit: ");
-    string userCommand = Console.ReadLine();
+    string userCommand = Console.ReadLine() ?? "";
 
     if (userCommand.ToLower() == exit)
     {

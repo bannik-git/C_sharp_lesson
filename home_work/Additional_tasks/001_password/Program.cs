@@ -9,7 +9,7 @@ Console.WriteLine($"У вас будет {maxAttemp} попытки чтобы �
 while (count < maxAttemp)
 {
     Console.Write($"Попытка №{count + 1}: ");
-    string userPassword = Console.ReadLine();
+    string userPassword = Console.ReadLine() ?? "";
 
     if (userPassword == password)
     {

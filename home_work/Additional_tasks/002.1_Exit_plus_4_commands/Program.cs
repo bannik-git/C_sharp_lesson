@@ -1,15 +1,15 @@
 ﻿Console.WriteLine("Программа работает исправно");
 
-string command1 = "Help",
-       command2 = "SetName",
-       command3 = "SetPassword",
-       command4 = "WriteName",
-       command5 = "Exit",
+string commandHelp = "Help",
+       setNameCommand = "SetName",
+       setPasswordCommand = "SetPassword",
+       writeNameCommand = "WriteName",
+       commandExit = "Exit",
        help = "Список команд:",
-       descriptionCommand2 = $" {command2} - установить имя",
-       descriptionCommand3 = $" {command3} - установить пароль",
-       descriptionCommand4 = $" {command4} - вывод установленного имени после ввода пароля",
-       descriptionCommand5 = $" {command5} - выход из программы",
+       descriptionSetNameCommand = $" {setNameCommand} - установить имя",
+       descriptionSetPasswordCommand = $" {setPasswordCommand} - установить пароль",
+       descriptionWriteNameCommand = $" {writeNameCommand} - вывод установленного имени после ввода пароля",
+       descriptionCommandExit = $" {commandExit} - выход из программы",
        userName = "",
        userPassword = "";
 
@@ -18,50 +18,57 @@ while (true)
 {   
     Console.Write("Введите команду: ");
     string userCommand = Console.ReadLine() ?? "";
-
-    if (userCommand.ToLower() == command1.ToLower())
+        userCommand = userCommand.ToLower();
+    if (userCommand == commandHelp.ToLower())
     {
         Console.WriteLine(help);
-        Console.WriteLine(descriptionCommand2);
-        Console.WriteLine(descriptionCommand3);
-        Console.WriteLine(descriptionCommand4);
-        Console.WriteLine(descriptionCommand5);
+        Console.WriteLine(descriptionSetNameCommand);
+        Console.WriteLine(descriptionSetPasswordCommand);
+        Console.WriteLine(descriptionWriteNameCommand);
+        Console.WriteLine(descriptionCommandExit);
     } 
-    else if (userCommand.ToLower() == command2.ToLower())
+    else if (userCommand == setNameCommand.ToLower())
     {
         Console.Write("Введите Ваше имя: ");
         userName = Console.ReadLine() ?? "";
     }
-    else if (userCommand.ToLower() == command3.ToLower())
+    else if (userCommand == setPasswordCommand.ToLower())
     {
-        if (userPassword == "")
+        if (userName != "")
         {
-            Console.Write("Введите новый пароль: ");
-            userPassword = Console.ReadLine() ?? "";
-        }
-        else
-        {
-            Console.Write("Введите старый пароль: ");
-            string oldUserPassword = Console.ReadLine() ?? "";
-            if (userPassword == oldUserPassword)
+            if (userPassword == "")
             {
                 Console.Write("Введите новый пароль: ");
                 userPassword = Console.ReadLine() ?? "";
             }
             else
             {
-                Console.WriteLine("Неверный пароль");
+                Console.Write("Введите старый пароль: ");
+                string oldUserPassword = Console.ReadLine() ?? "";
+                if (userPassword == oldUserPassword)
+                {
+                    Console.Write("Введите новый пароль: ");
+                    userPassword = Console.ReadLine() ?? "";
+                }
+                else
+                {
+                    Console.WriteLine("Неверный пароль");
+                }
             }
         }
+        else
+        {
+            Console.WriteLine($"Сначала нужно ввести имя. Для этого воспользуйтесь командой {setNameCommand}.");
+        }
     }
-    else if (userCommand.ToLower() == command4.ToLower())
+    else if (userCommand == writeNameCommand.ToLower())
     {
         Console.Write("Чтоб получить доступ к имени пользователя введите пароль: ");
         string passwordResponse = Console.ReadLine() ?? "";
         if (userPassword == passwordResponse && userName == "")
         {
             Console.WriteLine("Имя пользователя не установлено." +
-            $"Для того чтоб установить имя пользователю введите команду {command2}");
+            $"Для того чтоб установить имя пользователю введите команду {setNameCommand}");
         } 
         else if (userPassword == passwordResponse)
         {
@@ -72,13 +79,13 @@ while (true)
             Console.WriteLine("Неверный пароль");
         }
     }
-    else if (userCommand.ToLower() == command5.ToLower())
+    else if (userCommand == commandExit.ToLower())
     {
         break;
     }
     else
     {
         Console.WriteLine("Такой команды нет." +
-        $"Для получения списка команд введите {command1}");
+        $"Для получения списка команд введите {commandHelp}");
     }
 }

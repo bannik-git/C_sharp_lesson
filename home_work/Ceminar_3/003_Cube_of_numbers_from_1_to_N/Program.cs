@@ -1,4 +1,4 @@
-﻿Console.Write("Введите число: ");
+﻿Console.Write($"Введите число от 1 до {int.MaxValue}: ");
 int userNumber = Convert.ToInt32(Console.ReadLine()),
 count = 1;
 string result = "";

@@ -13,7 +13,7 @@ int[] GetRandomArray ()
     int[] randomArray = new int [arraySize];
     for (int count = 0; count < arraySize; count++)
     {
-        randomArray[count] = new Random().Next(fromNumber, upToNumber);
+        randomArray[count] = new Random().Next(fromNumber, upToNumber + 1);
     }
     return randomArray;
 }
@@ -65,7 +65,8 @@ void PrintArray (int[] array, int userResponseArray, int bootStripeDelay)
         Console.Write("]");
         Console.WriteLine();
     }
-    Console.Write(" Ваш массив - " + result);
+    Console.WriteLine();
+    Console.WriteLine(" Ваш массив - " + result);
 }
 
 int[] AddToArray (int[] array)
@@ -73,7 +74,6 @@ int[] AddToArray (int[] array)
     Console.Write("Введите число которое хотите добавить в массив: ");
     int userNumber = Convert.ToInt32(Console.ReadLine());
     int[] buffArray = new int [array.Length + 1];
-    Console.WriteLine(array.Length);
     for (int index = 0; index < array.Length; index++)
     {
         buffArray[index] = array[index];
@@ -103,7 +103,9 @@ int[] array = { 1, 2, 3, 4, 5, 6, 7, 8 };
 int[] userArray = new int [10];
 int userAnswer = -1;
 
-Console.Write("Хотите создать новый массив(1) или использовать созданный массив(2): ");
+Console.Clear();
+
+Console.Write("Хотите создать новый массив(1) или использовать программный массив(2): ");
 int userResponseArray = Convert.ToInt16(Console.ReadLine());
 
 if (userResponseArray == 1)
@@ -138,12 +140,15 @@ userResponseArray = 1;
 while(true)
 {
     Console.WriteLine();
-    Console.WriteLine("Если хотите добавить в массив элемент введите цифру 1."
-                    + "Если хотите удалить элемент массива введите цифру 2.");
-    Console.Write("Для выхода введите Exit: ");
+    Console.WriteLine("Если хотите добавить в массив элемент введите цифру 1.");
+    Console.WriteLine("Если хотите удалить элемент массива введите цифру 2.");
+    Console.WriteLine("Для выхода введите Exit");
+    Console.WriteLine();
+    Console.Write("Введите команду: ");
     string userAddOrRemoveAnswer = Console.ReadLine() ?? "";
     if (userAddOrRemoveAnswer.ToLower() == "exit")
     {
+        Console.Clear();
         break;
     }
     else
@@ -152,12 +157,12 @@ while(true)
         if (userAnswer == 1)
         {
             userArray = AddToArray(userArray);
-            PrintArray(userArray, userResponseArray, 5);
+            PrintArray(userArray, userResponseArray, 1);
         }
         else if (userAnswer == 2)
         {
             userArray = RemoveFromArray(userArray);
-            PrintArray(userArray, userResponseArray, 10);
+            PrintArray(userArray, userResponseArray, 5);
         }
     }
 }

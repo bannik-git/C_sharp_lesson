@@ -82,26 +82,51 @@ int[] AddToArray (int[] array)
     return buffArray;
 }
 
-int[] RemoveFromArray (int[] array)
+int[] RemoveFromArray (int[] array, ref int selector)
 {
     Console.Write("Введите индекс числа которое хотите удалить из массива: ");
     int userIndex = Convert.ToInt32(Console.ReadLine());
-    int[] buffArray = new int [array.Length - 1];
-    int buffIndex = 0;
-    for (int index = 0; index < array.Length; index++)
+    if (userIndex > array.Length - 1)
     {
-        if (index != userIndex)
-        {
-            buffArray[buffIndex] = array[index];
-            buffIndex++;
-        }
+        Console.WriteLine();
+        Console.WriteLine("Значение индекса больше размера массива");
+        Selector(ref selector);
+        return array;
     }
-    return buffArray;
+    else
+    {
+        int[] buffArray = new int [array.Length - 1];
+        int buffIndex = 0;
+        for (int index = 0; index < array.Length; index++)
+        {
+            if (index != userIndex)
+            {
+                buffArray[buffIndex] = array[index];
+                buffIndex++;
+            }
+        }
+        return buffArray;
+    }
+}
+
+int Selector (ref int selector)
+{
+    if (selector == 1)
+    {
+        selector = 2;
+        return selector;
+    }
+    else
+    {
+        selector = 1;
+        return selector;
+    }
 }
 
 int[] array = { 1, 2, 3, 4, 5, 6, 7, 8 };
 int[] userArray = new int [10];
-int userAnswer = -1;
+int userAnswer = -1,
+    selector = 1;
 
 Console.Clear();
 
@@ -139,6 +164,7 @@ else if (userResponseArray == 2)
 userResponseArray = 1;
 while(true)
 {
+    Thread.Sleep(500); // Задержка вывода 1 секунда.
     Console.WriteLine();
     Console.WriteLine("Если хотите добавить в массив элемент введите цифру 1.");
     Console.WriteLine("Если хотите удалить элемент массива введите цифру 2.");
@@ -161,8 +187,16 @@ while(true)
         }
         else if (userAnswer == 2)
         {
-            userArray = RemoveFromArray(userArray);
-            PrintArray(userArray, userResponseArray, 5);
+            userArray = RemoveFromArray(userArray, ref selector);
+            if (selector == 1)
+            {
+                PrintArray(userArray, userResponseArray, 2);
+
+            }
+            else
+            {
+            Selector(ref selector);
+            }
         }
     }
 }

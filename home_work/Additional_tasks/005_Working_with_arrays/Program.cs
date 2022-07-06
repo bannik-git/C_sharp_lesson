@@ -103,7 +103,24 @@ bool TryRemoveFromArray (ref int[] array, int userIndex)
     }
 }
 
+int[] Shuffle (int[] array)
+{
+    int[] indexArray = new int [array.Length];
+    for (int count = 0; count < array.Length; count++)
+    {
+        indexArray[count] = count;
+    }
 
+    int[] buffArray = new int [array.Length];
+    int randomIndex = 0;
+    for (int index = 0; index < array.Length; index++)
+    {
+        randomIndex = new Random().Next(0, indexArray.Length);
+        buffArray[index] = array[indexArray[randomIndex]];
+        TryRemoveFromArray(ref indexArray, randomIndex);
+    }
+    return buffArray;
+}
 
 int[] array = { 1, 2, 3, 4, 5, 6, 7, 8 };
 int[] userArray = new int [10];
@@ -156,6 +173,7 @@ while(true)
     string[] addingOrRemovingAnArrayElement = {String.Empty,
                     "Если хотите добавить в массив элемент введите цифру 1.",
                     "Если хотите удалить элемент массива введите цифру 2.",
+                    "Eсли хотите перемешать элементы массива введите цифру 3",
                     "Для выхода введите Exit",
                     String.Empty};
     PrintStringArray(addingOrRemovingAnArrayElement);
@@ -188,6 +206,10 @@ while(true)
                 Console.WriteLine();
                 Console.WriteLine("Значение индекса больше размера массива");
             }
+        }
+        else if (userAnswer == 3)
+        {
+            PrintIntArray(Shuffle(userArray), userResponseArray, 2); 
         }
     }
 }

@@ -17,7 +17,7 @@ string GetUserAnswer (string text)
 }
 
 // печать массива
-void Numbers (int[] array)
+void Numbers (double[] array)
 {
     string result = String.Empty; // Пустая строка
     for (int count = 0; count < array.Length; count++)
@@ -44,7 +44,7 @@ void Numbers (int[] array)
 }
 
 // Вспомогательная метод преобразующая строку в массив
-int[] GetArray (int[] array, string userString, int startIndex)
+double[] GetArray (double[] array, string userString, int startIndex)
 {
     string result = String.Empty;
     for (int index = 0; index < userString.Length; index++)
@@ -82,18 +82,18 @@ int GetNumberOfSpace (string stringWithNumbers)
 }
 
 //Метод получения готового массива из строки пользователя
-int[] SetNumbers (string userString)
+double[] SetNumbers (string userString)
 {   
-    int[] array = new int [GetNumberOfSpace(userString) + 1];
+    double[] array = new double [GetNumberOfSpace(userString) + 1];
     array = GetArray(array, userString, 0);
     return array;
 }
 
 // Метод добавляющий новые элементы в массив
-int[] AddNumbers (int[] array, string StringWithNumbersToAdd)
+double[] AddNumbers (double[] array, string StringWithNumbersToAdd)
 {
     int space = GetNumberOfSpace(StringWithNumbersToAdd) + 1;
-    int[] buffArray = new int [array.Length + space];
+    double[] buffArray = new double [array.Length + space];
     for (int count = 0; count <= array.Length; count++)
     {   
         if (count < array.Length)
@@ -109,12 +109,12 @@ int[] AddNumbers (int[] array, string StringWithNumbersToAdd)
 }
 
 // Метод удаляющий числа из массива если они совпали с цифрами введенными пользователем
-int[] RemoveNumbers (int[] array, string stringWithNumbersToDelete)
+double[] RemoveNumbers (double[] array, string stringWithNumbersToDelete)
 {
     int space = GetNumberOfSpace(stringWithNumbersToDelete) + 1,
         countDeleteElements = 0; //????
-    int[] buffArray = new int[array.Length],
-          stringArray = new int [space];
+    double[] buffArray = new double[array.Length],
+             stringArray = new double [space];
     stringArray = GetArray(stringArray, stringWithNumbersToDelete, 0);
     for (int index = 0; index <buffArray.Length; index++)
     {
@@ -129,7 +129,7 @@ int[] RemoveNumbers (int[] array, string stringWithNumbersToDelete)
             }
         }
     }
-    int[] resultArray = new int[array.Length - countDeleteElements];
+    double[] resultArray = new double[array.Length - countDeleteElements];
     int buffIndex = 0;
     for (int index = 0; index < array.Length; index++)
     {
@@ -143,9 +143,9 @@ int[] RemoveNumbers (int[] array, string stringWithNumbersToDelete)
 }
 
 // Метод суммирующий цифры элементов массива
-int Sum (int[] array)
+double Sum (double[] array)
 {
-    int result = 0;
+    double result = 0;
     for (int index = 0; index < array.Length; index++)
     {
         if (array[index] < 10) // однозначное число;
@@ -189,7 +189,7 @@ bool TryRemoveFromArray (ref int[] array, int userIndex)
 }
 
 // Метод перемешивающий элементы массива
-int[] Shuffle (int[] array)
+double[] Shuffle (double[] array)
 {
     int[] indexArray = new int [array.Length];
     for (int count = 0; count < array.Length; count++)
@@ -197,15 +197,71 @@ int[] Shuffle (int[] array)
         indexArray[count] = count;
     }
 
-    int[] buffArray = new int [array.Length];
+    double[] buffArray = new double [array.Length];
     int randomIndex = 0;
     for (int index = 0; index < array.Length; index++)
     {
-        randomIndex = new Random().Next(0, indexArray.Length);
+        randomIndex = new Random().Next(0, indexArray.Length);//Convert.ToDouble(new Random().Next(0, indexArray.Length));
         buffArray[index] = array[indexArray[randomIndex]];
         TryRemoveFromArray(ref indexArray, randomIndex);
     }
     return buffArray;
+}
+
+// Метод возведения в степень массива или выбранного элемента
+double[] Exponentiation (double[] array, int degree, int index = -1)
+{  
+    double number = 0;
+    if (index == -1)
+    {
+        if (degree == 0)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = 1;
+            }
+        }
+        else
+        {    
+            for (int i = 0; i < array.Length; i++)
+            {
+                number = array[i];
+                for (int count = 1; count < degree; count++)
+                {
+                    number *= array[i];
+                }
+                array[i] = number;
+            }
+        }
+    }
+    else 
+    {
+        number = array[index];
+        for (int count = 1; count < degree; count++)
+                {
+                    number *= array[index];
+                }
+                array[index] = number;
+    }
+    return array;
+
+}
+
+// Метод извлечения корня из массива или выбранного элемента
+double[] RootExtraction (double[] array, double degree, int index = -1)
+{
+    if (index == -1)
+    {
+    for (int i = 0; i < array.Length; i++)
+        {
+            array[i] = Math.Pow(array[i], 1 / degree); 
+        }
+    }
+    else
+    {
+        array[index] = Math.Pow(array[index], 1 / degree);
+    }
+    return array;
 }
 
 Console.Clear();
@@ -214,8 +270,8 @@ string[] greetings = {"Вас приветствует программа для
 PrintStringArray(greetings);
 
 string userNumbers = GetUserAnswer("Введите числа через пробел: ");
-int[] userArray = SetNumbers(userNumbers);
-int sumDigitOfNumbers = 0;
+double[] userArray = SetNumbers(userNumbers);
+double sumDigitOfNumbers = 0;
 
 Console.WriteLine("Поздравляем, новый массив успешно создан.");
 Numbers(userArray);
@@ -228,6 +284,8 @@ string[] functional = {"Функционал программы:",
                        "  Удалить элементы из созданного массива - цифра 3",
                        "  Найти сумму всех чисел элементов массива - цифра 4",
                        "  Перемешать элементы массива - цифра 5",
+                       "  Возводить в n степень определенный или все элементы массива - цифра 6",
+                       "  Извлекать корень n степени из определенного или всех элементов массива - 7",
                        "  Для выхода из программы введите Exit"};
 
 Console.WriteLine();
@@ -242,6 +300,7 @@ while(true)
     }
     else if (userAnswer == "exit")
     {
+        Console.Clear();
         break;
     }
     else
@@ -271,13 +330,39 @@ while(true)
         {
             userArray = Shuffle(userArray);
         }
-        else if (userAnswer == "help")
+        else if (numberUserAnswer == 6)
         {
-            PrintStringArray(functional);
+            Console.WriteLine();
+            Console.WriteLine("Если вы хотите возвести в степень какой-то элемент массива"
+            + " укажите его индекс через пробел например (2 3).");
+            Console.Write("Если хотите возвести ввесь массив в n степень просто введите степень: ");
+            string str = Console.ReadLine() ?? "";
+            double[] arguments = SetNumbers(str);
+            if (arguments.Length == 1)
+            {
+                userArray = Exponentiation(userArray, Convert.ToInt32(arguments[0]));
+            }
+            else
+            {
+                userArray = Exponentiation(userArray, Convert.ToInt32(arguments[0]), Convert.ToInt32(arguments[1]));
+            }
         }
-        else if (userAnswer == "exit")
+        else if (numberUserAnswer == 7)
         {
-            break;
+            Console.WriteLine();
+            Console.WriteLine("Если вы хотите извлечь корень n степени из какого-то элемента массива"
+            + " укажите степень корня и индекс элемента через пробел например (2 3).");
+            Console.Write("Если хотите извлечь корень n степени из всех элементов массива просто введите степень корня: ");
+            string str = Console.ReadLine() ?? "";
+            double[] arguments = SetNumbers(str);
+            if (arguments.Length == 1)
+            {
+                userArray = RootExtraction(userArray, Convert.ToInt32(arguments[0]));
+            }
+            else
+            {
+                userArray = RootExtraction(userArray, Convert.ToInt32(arguments[0]), Convert.ToInt32(arguments[1]));
+            }
         }
         else
         {

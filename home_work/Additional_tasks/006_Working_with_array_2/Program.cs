@@ -19,18 +19,10 @@ string GetUserAnswer (string text)
 // печать массива
 void Numbers (double[] array)
 {
-    string result = String.Empty; // Пустая строка
+    string result = "["; 
     for (int count = 0; count < array.Length; count++)
     {
-        if (count == 0 && count == array.Length - 1)
-        {
-            result += $"[{array[count]}]";
-        }
-        else if (count == 0)
-        {
-            result += $"[{array[count]}, ";
-        }
-        else if (count == array.Length - 1)
+        if (count == array.Length - 1)
         {
             result += $"{array[count]}]";
         }
@@ -143,20 +135,20 @@ double[] RemoveNumbers (double[] array, string stringWithNumbersToDelete)
 }
 
 // Метод суммирующий цифры элементов массива
-double Sum (double[] array)
+int Sum (double[] array)
 {
-    double result = 0;
+    int result = 0;
     for (int index = 0; index < array.Length; index++)
     {
         if (array[index] < 10) // однозначное число;
         {
-            result += array[index];
+            result += (int) array[index];
         }
         else
         {
             while(array[index] > 0)
             {
-                result += array[index] % 10;
+                result += (int)array[index] % 10;
                 array[index] /= 10;
             }
         }
@@ -271,7 +263,7 @@ PrintStringArray(greetings);
 
 string userNumbers = GetUserAnswer("Введите числа через пробел: ");
 double[] userArray = SetNumbers(userNumbers);
-double sumDigitOfNumbers = 0;
+int sumDigitOfNumbers = 0;
 
 Console.WriteLine("Поздравляем, новый массив успешно создан.");
 Numbers(userArray);
@@ -279,101 +271,98 @@ Numbers(userArray);
 
 // Описание функционала программы
 string[] functional = {"Функционал программы:",
-                       "  Создать новый массив - цифра 1",
-                       "  Добавить новые элементы в созданный массив - цифра 2",
-                       "  Удалить элементы из созданного массива - цифра 3",
-                       "  Найти сумму всех чисел элементов массива - цифра 4",
-                       "  Перемешать элементы массива - цифра 5",
-                       "  Возводить в n степень определенный или все элементы массива - цифра 6",
-                       "  Извлекать корень n степени из определенного или всех элементов массива - 7",
+                       "  1 - cоздать новый массив",
+                       "  2 - Добавить новые элементы в созданный массив",
+                       "  3 - Удалить элементы из созданного массива",
+                       "  4 - Найти сумму всех чисел элементов массива",
+                       "  5 - Перемешать элементы массива",
+                       "  6 - Возводить в n степень определенный или все элементы массива",
+                       "  7 - Извлекать корень n степени из определенного или всех элементов массива",
+                       "  8 - Вывод массива",
                        "  Для выхода из программы введите Exit"};
 
 Console.WriteLine();
 PrintStringArray(functional);
+string str;
+double[] arguments;
 while(true)
 {
     
     string userAnswer = GetUserAnswer("Введите цифру или команду, для вывода описания функционала введите Help: ").ToLower();
-    if (userAnswer == "help")
+    switch (userAnswer)
     {
-        PrintStringArray(functional);
-    }
-    else if (userAnswer == "exit")
-    {
-        Console.Clear();
-        break;
-    }
-    else
-    {
-        int numberUserAnswer = Convert.ToInt16(userAnswer);
-        if (numberUserAnswer == 1)
-        {
-            userNumbers = GetUserAnswer("Введите числа через пробел: ");
-            userArray = SetNumbers(userNumbers);
-        }
-        else if (numberUserAnswer == 2)
-        {
-            userNumbers = GetUserAnswer("Введите через пробел числа которые вы хотите добавить: ");
-            userArray = AddNumbers(userArray, userNumbers);
-        }
-        else if (numberUserAnswer == 3)
-        {
-            userNumbers = GetUserAnswer("Введите через пробел числа которые вы хотите удалить: ");
-            userArray = RemoveNumbers(userArray, userNumbers);
-        }
-        else if (numberUserAnswer == 4)
-        {
-            sumDigitOfNumbers = Sum(userArray);
-            Console.WriteLine(sumDigitOfNumbers);
-        }
-        else if (numberUserAnswer == 5)
-        {
-            userArray = Shuffle(userArray);
-        }
-        else if (numberUserAnswer == 6)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Если вы хотите возвести в степень какой-то элемент массива"
-            + " укажите его индекс через пробел например (2 3).");
-            Console.Write("Если хотите возвести ввесь массив в n степень просто введите степень: ");
-            string str = Console.ReadLine() ?? "";
-            double[] arguments = SetNumbers(str);
-            if (arguments.Length == 1)
+        case "help": 
+            PrintStringArray(functional);
+            break;
+        case "exit": 
+            Console.Clear();
+            break;
+        default:
+            int numberUserAnswer = Convert.ToInt16(userAnswer);
+            switch (numberUserAnswer)
             {
-                userArray = Exponentiation(userArray, Convert.ToInt32(arguments[0]));
+                case 1: 
+                    userNumbers = GetUserAnswer("Введите числа через пробел: ");
+                    userArray = SetNumbers(userNumbers);
+                    break;
+                case 2:
+                    userNumbers = GetUserAnswer("Введите через пробел числа которые вы хотите добавить: ");
+                    userArray = AddNumbers(userArray, userNumbers);
+                    break;
+                case 3:
+                    userNumbers = GetUserAnswer("Введите через пробел числа которые вы хотите удалить: ");
+                    userArray = RemoveNumbers(userArray, userNumbers);
+                    break;
+                case 4:
+                    sumDigitOfNumbers = Sum(userArray);
+                    Console.WriteLine(sumDigitOfNumbers);
+                    break;
+                case 5:
+                    userArray = Shuffle(userArray);
+                    break;
+                case 6:
+                    Console.WriteLine();
+                    Console.WriteLine("Если вы хотите возвести в степень какой-то элемент массива"
+                    + " укажите его индекс через пробел например (2 3).");
+                    Console.Write("Если хотите возвести ввесь массив в n степень просто введите степень: ");
+                    str = Console.ReadLine() ?? "";
+                    arguments = SetNumbers(str);
+                    if (arguments.Length == 1)
+                    {
+                        userArray = Exponentiation(userArray, (int) arguments[0]);
+                    }
+                    else
+                    {
+                        userArray = Exponentiation(userArray, (int) arguments[0], (int) arguments[1]);
+                    }
+                    break;
+                case 7:
+                    Console.WriteLine();
+                    Console.WriteLine("Если вы хотите извлечь корень n степени из какого-то элемента массива"
+                    + " укажите степень корня и индекс элемента через пробел например (2 3).");
+                    Console.Write("Если хотите извлечь корень n степени из всех элементов массива просто введите степень корня: ");
+                    str = Console.ReadLine() ?? "";
+                    arguments = SetNumbers(str);
+                    if (arguments.Length == 1)
+                    {
+                        userArray = RootExtraction(userArray, (int) arguments[0]);
+                    }
+                    else
+                    {
+                        userArray = RootExtraction(userArray, (int) arguments[0], (int) arguments[1]);
+                    }
+                    break;
+                case 8:
+                    Numbers(userArray);
+                    break;
+                default:
+                    Console.WriteLine("Введена не верная команда");
+                    break;
             }
-            else
+            if ( numberUserAnswer != 4 && numberUserAnswer != 8)
             {
-                userArray = Exponentiation(userArray, Convert.ToInt32(arguments[0]), Convert.ToInt32(arguments[1]));
+                Numbers(userArray);
             }
-        }
-        else if (numberUserAnswer == 7)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Если вы хотите извлечь корень n степени из какого-то элемента массива"
-            + " укажите степень корня и индекс элемента через пробел например (2 3).");
-            Console.Write("Если хотите извлечь корень n степени из всех элементов массива просто введите степень корня: ");
-            string str = Console.ReadLine() ?? "";
-            double[] arguments = SetNumbers(str);
-            if (arguments.Length == 1)
-            {
-                userArray = RootExtraction(userArray, Convert.ToInt32(arguments[0]));
-            }
-            else
-            {
-                userArray = RootExtraction(userArray, Convert.ToInt32(arguments[0]), Convert.ToInt32(arguments[1]));
-            }
-        }
-        else
-        {
-            Console.WriteLine("Введена не верная команда");
-        }
-        if (numberUserAnswer != 4)
-        {
-            Numbers(userArray);
-        }
+            break;
     }
 }
-
-
-

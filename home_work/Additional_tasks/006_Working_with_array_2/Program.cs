@@ -296,7 +296,7 @@ while(true)
             break;
         case "exit": 
             Console.Clear();
-            break;
+            return;
         default:
             int numberUserAnswer = Convert.ToInt16(userAnswer);
             switch (numberUserAnswer)

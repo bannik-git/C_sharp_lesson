@@ -20,11 +20,14 @@ void PrintArray (double[,] array)
 double[,] FillArray (int row, int column)
 {
     double[,] array = new double[row, column];
+    int max = 10,
+        min = -3;
+    Random random = new Random();
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
         {
-            array[i, j] = Math.Round(new Random().Next(-10, 11) + new Random().NextDouble(), 4);
+            array[i, j] = Math.Round(random.NextDouble() * (max - min) + min, 4);
         }
     }
     return array;

@@ -4,7 +4,7 @@
     return Convert.ToInt32(Console.ReadLine());
 }
 
-void PrintArray (int[,] array)
+void PrintTwoDimensionalArray (int[,] array)
 {
     for (int m = 0; m < array.GetLength(0); m++)
     {
@@ -29,92 +29,63 @@ int[,] FillArray (int[,] array)
     }
     return array;
 }
-int[,] FillArray2 (int[,] array)
+
+int SizeArray (int[,] array)
 {
-    Random random = new Random();
+    int max = array[0 ,0];
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
         {
-            array [i, j] = -2; // NextDouble() [0.0; 1.0] * (max - min) + min;
+            if (max < array[i, j])
+                max = array[i,j];
         }
+    }
+    return max + 1;
+}
+
+int GetQuantity (int[,] array, int number)
+{
+    int count = 0;
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            if (number == array[i,j])
+                count++;
+        }
+    }
+    return count;
+}
+
+int[] FillingArrayNumberOfMatches (int[] array, int [,] twoDimensionalArray)
+{
+    for (int i = 0; i < array.Length; i++)
+    {
+        array[i] = GetQuantity(twoDimensionalArray, i);
     }
     return array;
 }
 
-int GetReplays (int[,] array, int number)
-{   
-    int count = 0;
-    for (int i = 0; i < array.GetLength(0); i++)
-        {
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                if(number == array[i, j])
-                    count++;
-            }
-        }
-    return count;
-}
+void PrintArray (int[] array)
+{
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (array[i] != 0)
+            Console.WriteLine($"{i} встречается {array[i]} раз");
 
+    }
+}
 
 int row = GetNumber("Введите количество строк массива: "),
     column = GetNumber("Введите количество столбцов массива: ");
 
 int[,] array = new int [row, column];
-
 array = FillArray(array);
-PrintArray(array);
+PrintTwoDimensionalArray(array);
 
-int[,] result = GetString(array);
-// PrintArray(result);
+int[] arrayWithAnswers = new int[SizeArray(array)];
+arrayWithAnswers = FillingArrayNumberOfMatches(arrayWithAnswers, array);
 
-// 1, 2, 3 
-// 4, 6, 1 
-// 2, 1, 6
+PrintArray(arrayWithAnswers);
 
-bool TrueORFalse (int[,] buff, int number)
-{
-    bool result = true;
-    for (int i = 0; i < buff.GetLength(0); i++)
-    {
-        if (number == buff[i, 0])
-            result = false;
-    }
-    return result;
-}
-int[,] GetString (int[,] array)
-{   
-    int count = 0,
-        index = 0;
-    int [,] buff = new int[array.Length, 2];
-    buff = FillArray2(buff);
-    for (int i = 0; i < array.GetLength(0); i++)
-        {
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                count = GetReplays(array, array[i, j]);
-                if (TrueORFalse(buff, array[i, j]))
-                {
-                    buff[index, 0] =array[i, j]; 
-                    buff[index, 1] = count;
-                    index++;
-                }
-            }
-        }
-    return buff;
-}
-void PrintNewArray (int[,] array)
-{
-    for (int i = 0; i < array.GetLength(0); i++)
-    {
-        if(array[i, 1] != -2)
-        {
-            Console.Write($"{array[i, 0]} встречается {array[i, 1]} раз");
-            Console.WriteLine();
-
-        }
-    }
-    Console.WriteLine();
-}
-
-PrintNewArray(result);

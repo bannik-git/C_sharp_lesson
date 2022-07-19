@@ -30,33 +30,55 @@ int[,] FillArray (int[,] array)
     return array;
 }
 
-int[] SumElementsRowArray (int[,] array)
+int GetIndexStringWhitMaxSumElements (int[,] array)
 {
-    int[] sumElementsRowArray = new int[array.GetLength(0)];
-    int sum = 0;
+    int maxIndex = 0,
+        buff = 0,
+        sum = 0;
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
         {
             sum += array[i, j];
         }
-        sumElementsRowArray[i] = sum;
-        sum = 0;
+        if (sum < buff || i == 0)
+        {
+            buff = sum;
+            sum = 0;
+            maxIndex = i;
+        }
     }
-    return sumElementsRowArray;
+    return maxIndex;
 }
 
-int GetIndexMaximumElement (int[] array)
-{
 
-    int minIndex = 0;
-    for (int i = 0; i < array.Length; i++)
-    {
-        if (array[i]< array[minIndex])
-            minIndex = i;
-    }
-    return minIndex;
-}
+// Методы для решения через дополнительный массив
+// int[] SumElementsRowArray (int[,] array)
+// {
+//     int[] sumElementsRowArray = new int[array.GetLength(0)];
+//     int sum = 0;
+//     for (int i = 0; i < array.GetLength(0); i++)
+//     {
+//         for (int j = 0; j < array.GetLength(1); j++)
+//         {
+//             sum += array[i, j];
+//         }
+//         sumElementsRowArray[i] = sum;
+//         sum = 0;
+//     }
+//     return sumElementsRowArray;
+// }
+
+// int GetIndexMaximumElement (int[] array)
+// {
+//     int minIndex = 0;
+//     for (int i = 0; i < array.Length; i++)
+//     {
+//         if (array[i]< array[minIndex])
+//             minIndex = i;
+//     }
+//     return minIndex;
+// }
 
 int row = GetNumber("Введите количество строк массива: "),
     column = GetNumber("Введите количество столбцов массива: ");
@@ -65,6 +87,11 @@ int[,] array = new int [row, column];
 array = FillArray(array);
 PrintTwoDimensionalArray(array);
 
-int[] sumOfElementsAcrossRows = SumElementsRowArray(array);
-int minIndex = GetIndexMaximumElement(sumOfElementsAcrossRows);
+int minIndex = GetIndexStringWhitMaxSumElements(array);
 Console.WriteLine($"Номер строки с наименьшей суммой элементов = {minIndex + 1}");
+
+// Решение через массив где в каждый элемент записывается сумма элементов строки первоначального массива
+// 
+// int[] sumOfElementsAcrossRows = SumElementsRowArray(array);
+// int minIndex = GetIndexMaximumElement(sumOfElementsAcrossRows);
+// Console.WriteLine($"Номер строки с наименьшей суммой элементов = {minIndex + 1}");

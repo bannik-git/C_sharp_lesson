@@ -6,13 +6,8 @@
 
 int PrintNumber (int number1, int number2)
 {
-    int max = number1,
-        min = number2;    
-    if (min > max)
-    {
-        max = number2;
-        min = number1;
-    }
+    int max = number1 > number2 ? number1 : number2,
+        min = number2 < number1 ? number2 : number1;   
     if (min != max)
     {
         Console.Write(PrintNumber(max - 1, min) + ", ");

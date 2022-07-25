@@ -17,39 +17,6 @@ void PrintTwoDimensionalArray (int[,] array)
     Console.WriteLine();
 }
 
-// int[,] FillArray (int[,] array, int row , int column, int count = 1, int i = 0)
-// {
-//     int index = 0;
-//     if (row == 0 || column == 0)
-//         return array;
-//     for (i = 0; i < row * column; i++)
-//     {
-//         if (i == 0)
-//         {   
-//             for (int j = 0; j < column; j++)
-//             {
-//                 array[i, j] = count++;
-//             }
-//         }
-//         else if (i < row - 1)
-//         {
-//             array[i, column - 1] = count++; 
-//         }
-//         else if (i == row -1)
-//         {
-//             for (int n = 0; n < column - 1; n++)
-//             {
-//                 array[i, column -1 - n] = count++;
-//             }
-//         }
-//         else if (i < row * 2 - 1) // i = 4  row = 3 * 2 = 6
-//                 array[row - 1 - index++, 0] = count++;
-//         else
-//             array = FillArray(array, row -2, column -2, count, i);
-
-//     }
-//     return array;
-// }
 int[,] FillInSquareArray (int[,] array, 
                   int row, 
                   int column, 
@@ -57,12 +24,18 @@ int[,] FillInSquareArray (int[,] array,
                   int startRowIndex = 0, 
                   int startColumnIndex = 0)
 {
-    // Console.WriteLine($"row = {row}, column = {column}, startRowIndex = {startRowIndex}, startColumnIndex = {startColumnIndex}");
     if (row < 0 || column < 0)
         return array;
     else if (row == 0 || column == 0) 
     {
-        array[startRowIndex, startColumnIndex] = count;
+        if (row == 0 && column != 0)
+            for (int k = 0; k <= column; k++)
+                array[startRowIndex, startColumnIndex + k] = count++; 
+        else if (column == 0 && row != 0)
+            for (int t = 0; t <= row; t++)
+                array[startRowIndex + t, startColumnIndex] = count++;
+        else
+            array[startRowIndex, startColumnIndex] = count;
         return array;
     }
     else
@@ -80,7 +53,7 @@ int[,] FillInSquareArray (int[,] array,
                 for (int j = 0; j < column; j++)
                     array[row + startRowIndex, column - j + startColumnIndex] = count++;
             else if (i == 3)
-                for (int j = 0; j < column; j++)
+                for (int j = 0; j < row; j++)
                     array[row - j + startRowIndex, startColumnIndex] = count++;
 
         }
@@ -88,9 +61,6 @@ int[,] FillInSquareArray (int[,] array,
     }   
     return array;
 }
-
-
-
 
 // index   0   1   2  3 
 //   0   { 1,  2,  3, 4}

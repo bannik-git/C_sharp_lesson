@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Timers;
 
 string GetAnswer (string text)
 {
@@ -12,45 +13,32 @@ void PrintArray (string[] array)
             Console.WriteLine(array[i]);
 }
 
-void PrintField(string[,] field, int indexStringUser, string instruction)
+void PrintField(string[,] field, int[] userCoordinates, string instruction, char userSymbol)
 {
     Console.Clear();
-    Console.WriteLine(instruction + "\n");
-    // ограниченный вывод поля
-    int i = 0,
-        j = field.GetLength(0) - 1;
-    if (indexStringUser == j)
+    for (int i = 0; i < field.GetLength(0); i++)
     {
-        for(i = indexStringUser - 2; i < j + 1; i++)
-        { 
-            Console.WriteLine(field[i, 0]);
-        }
-    }
-    else if (indexStringUser != j && indexStringUser > 0)
-        for (i = indexStringUser - 1; i < indexStringUser + 2; i++)
+        for (int j = 0; j < field.GetLength(1); j++)
         {
-            Console.WriteLine(field[i, 0]);
+            Console.Write(field[i, j]);
         }
-    else
-    {
-        for(i = indexStringUser; i < indexStringUser + 2; i++)
-            Console.WriteLine(field[i, 0]);
+        Console.WriteLine();
     }
-    // Вывод всего поля сразу
-    // for (int i = 0; i < field.GetLength(0); i++)
-    // {
-    //     for (int j = 0; j < field.GetLength(1); j++)
-    //     {
-    //         Console.Write(field[i, j]);
-    //     }
-    //     Console.WriteLine();
-    // }
+    Console.WriteLine(instruction + "\n");
+    Console.SetCursorPosition(userCoordinates[2], userCoordinates[0]);
+    Console.Write('@');
 }
 
-void GetPlaceOfAppearance (string[,] field, char userSymbol, int[] userCoorinates)
+void MapFormation (string[,] field, string path)
+{
+    StreamReader map = new StreamReader(path);
+    for (int i = 0; i < field.GetLength(0); i++)
+        field[i, 0] = map.ReadLine() ?? String.Empty;
+}
+
+void GetPlaceOfAppearance (string[,] field, int[] userCoorinates)
 {
     Random random = new Random();
-    StringBuilder buffString = new StringBuilder();
     int i = 0,
         j = 0;
     while (true)
@@ -59,9 +47,6 @@ void GetPlaceOfAppearance (string[,] field, char userSymbol, int[] userCoorinate
         j = random.Next(0, field[0,0].Length);
         if(field[i, 0][j] != '*')
         {
-            buffString.Append(field[i, 0]);
-            buffString[j] = userSymbol;
-            field[i, 0] = Convert.ToString(buffString) ?? string.Empty;
             userCoorinates[0] = i;
             userCoorinates[2] = j;
             return;
@@ -69,104 +54,48 @@ void GetPlaceOfAppearance (string[,] field, char userSymbol, int[] userCoorinate
     }
 }
 
-void Moving(string[,] field, int[] userCoordinates, char userSymbol, ConsoleKey key)
+void Moving(string[,] field, int[] userCoordinates, ConsoleKey key)
 {
-    StringBuilder buffString = new StringBuilder(field[userCoordinates[0], 0]); // userCoordinates[0] - номер строки с местом пользователя
-// Клавиши:
-// DownArrow  | 40 | Клавиша СТРЕЛКА ВНИЗ.
-// UpArrow 	  | 38 | Клавиша СТРЕЛКА ВВЕРХ.
-// LeftArrow  | 37 | Клавиша СТРЕЛКА ВЛЕВО.
-// RightArrow | 39 | Клавиша СТРЕЛКА ВПРАВО.
-    switch (key)
+    switch(key)
     {
         case ConsoleKey.UpArrow:
         {
             if (field[userCoordinates[0] - 1, 0][userCoordinates[2]] != '*')
-            {
-            buffString.Replace(userSymbol, ' ');
-            field[userCoordinates[0], 0] = buffString.ToString();
-            buffString.Clear()
-                      .Append(field[userCoordinates[0] - 1 , 0]);
-            buffString[userCoordinates[2]] = userSymbol;
-            field[userCoordinates[0] - 1, 0] = buffString.ToString();
-            userCoordinates[0] -= 1; 
-            }
+                userCoordinates[0]--;
             break;
         }
         case ConsoleKey.DownArrow:
         {
             if (field[userCoordinates[0] + 1, 0][userCoordinates[2]] != '*')
-            {
-            buffString.Replace(userSymbol, ' ');
-            field[userCoordinates[0], 0] = buffString.ToString();
-            buffString.Clear()
-                      .Append(field[userCoordinates[0] + 1 , 0]);
-            buffString[userCoordinates[2]] = userSymbol;
-            field[userCoordinates[0] + 1, 0] = buffString.ToString();
-            userCoordinates[0] += 1; 
-            }
+                userCoordinates[0]++;   
             break;
         }
         case ConsoleKey.LeftArrow:
         {
             if (field[userCoordinates[0], 0][userCoordinates[2] - 1] != '*')
-            {
-                buffString.Replace(userSymbol, ' ');
-                buffString[userCoordinates[2] - 1] = userSymbol;
-                field[userCoordinates[0], 0] = buffString.ToString();
-                userCoordinates[2] -= 1; 
-            }
+                userCoordinates[2]--;
             break;
         }
         case ConsoleKey.RightArrow:
         {
             if (field[userCoordinates[0], 0][userCoordinates[2] + 1] != '*')
-            {
-                buffString.Replace(userSymbol, ' ');
-                buffString[userCoordinates[2] + 1] = userSymbol;
-                field[userCoordinates[0], 0] = buffString.ToString();
-                userCoordinates[2] += 1; 
-            }
+                userCoordinates[2]++;
             break;
         }
-    }
-    // return field;
+    }   
 }
 
-void RestorationOfThePlayingField (string[,] field)
-{
-    StringBuilder buffString = new StringBuilder();
-    for(int i = 0; i < field.GetLength(0); i++)
-    {
-        buffString.Append(field[i, 0])
-                  .Replace('@', ' ');
-        field[i, 0] = buffString.ToString();
-        buffString.Clear();
-    }
-}
-
-string[,] field = {  //33 на 16
-{"****************  ***************"},
-{"*                               *"},
-{"*  *************  ************  *"},
-{"*      ****               ****  *"},
-{"*************************  ******"},
-{"****      *********        ***  *"},
-{"**     *****   *  ***  *******  *"},
-{"*                               *"},
-{"****   **   *********************"},
-{"*      **        *********    ***"},
-{"****  *********   ******     ****"},
-{"***************   ******   ******"},
-{"*         *****              ****"},
-{"******   ***************   ******"},
-{"******                          *"},
-{"******************************  *"}
-};
+int NumberOfFiles = new DirectoryInfo(@$"{Directory.GetCurrentDirectory()}\Maps\").GetFiles().Length;
+int level = Convert.ToInt16(GetAnswer($"Доступно уровней - {NumberOfFiles} \nВведите № уровня: "));
+string path = @$"{Directory.GetCurrentDirectory()}\Maps\{level}_level.txt";
+int count = File.ReadAllLines(path).Length;
+string[,] field = new string[count, 1]; 
+MapFormation(field, path);
 char user = '@';
 string instruction = "Для передвижения используйте стрелочки, для выхода Esc";
 int[] userCoordinates = new int[3];
-GetPlaceOfAppearance(field, user, userCoordinates);
+
+GetPlaceOfAppearance(field, userCoordinates);
 ConsoleKeyInfo directionOfTravel;
 Console.CursorVisible = false;
 
@@ -180,36 +109,38 @@ Console.ReadKey();
 
 while (true)
 {
-    PrintField(field, userCoordinates[0], instruction);
+    
+    PrintField(field, userCoordinates, instruction, user);
     directionOfTravel = Console.ReadKey();
     switch (directionOfTravel.Key)
     {
+
         case ConsoleKey.Escape:
         {
+            Console.SetCursorPosition(0, field.GetLength(0) + 4);
             string answer = GetAnswer("Хотите выйти введите - д, Если хотите попробовать еще раз просто нажмите Enter: ").ToLower();
             if (answer == "д" || answer == "l")
             {
                 Console.CursorVisible = true;
+                Console.Clear();
                 return;
             }
             else 
-            {
-                RestorationOfThePlayingField (field);
-                GetPlaceOfAppearance(field, user, userCoordinates);
-            }
+                GetPlaceOfAppearance(field, userCoordinates);
             break;
         }
         default:
         {
             if (userCoordinates[0] != 0 && userCoordinates[0] != field.GetLength(0) - 1)
             {
-                // field = 
-                Moving(field, userCoordinates, user, directionOfTravel.Key);
+
+                Moving(field, userCoordinates, directionOfTravel.Key);
                 break;
             }
             else
             {
-                Console.WriteLine("\nПоздравляю, Вы нашли выход из лабиринта!\n");
+                Console.SetCursorPosition(0, field.GetLength(0) + 2);
+                Console.WriteLine("Поздравляю, Вы нашли выход из лабиринта!\n");
                 goto case ConsoleKey.Escape;
             }
         }

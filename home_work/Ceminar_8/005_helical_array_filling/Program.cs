@@ -10,7 +10,7 @@ void PrintTwoDimensionalArray (int[,] array)
     {
         for (int n = 0; n < array.GetLength(1); n++)
         {
-            Console.Write(array[m, n] + " ");
+            Console.Write(array[m, n] + "\t");
         }
         Console.WriteLine();
     }

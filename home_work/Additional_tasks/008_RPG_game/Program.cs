@@ -1,7 +1,5 @@
 ﻿using System.IO;
 
-using System.IO;
-
 string GetAnswer (string text)
 {
     Console.Write(text);
@@ -234,7 +232,7 @@ string[] hello = {"Вас приветствует игра по поиску в
                   "Ваше местоположения обозначено знаком - @, * обозначены стены лабиринта",
                   "Для начала нажмите Enter"
                  };
-                 
+
 PrintArray(hello);
 Console.ReadKey();
 Random direction = new Random();
